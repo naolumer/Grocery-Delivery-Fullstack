@@ -20,6 +20,7 @@ app.get("/",(req,res)=>{
     })
 })
 
+// user api
 app.use("/api/user",userRouter)
 
 
