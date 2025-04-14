@@ -59,9 +59,7 @@ export const registerUser = async (req,res)=>{
 }
 
 
-
-
-
+// Login api
 export const loginController = async (req,res)=>{
     
     const {email,password} = req.body
