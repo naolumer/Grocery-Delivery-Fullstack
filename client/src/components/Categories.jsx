@@ -16,7 +16,7 @@ const Categories = () => {
             categories.map((categ,index)=> (
               <Link key={index} to={`/products/${categ.path}`} onClick={()=>{setCategory(categ.path); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className='justify-center items-center group px-3 py-5 rounded-lg flex flex-col gap-2' style={{ backgroundColor: categ.bgColor }} key={categ.title}>
                   <img  className='max-w-28 group-hover:scale-110 transition-all duration-100' src={categ.image} alt="" />
-                  <p className=' text-sm'>{categ.text}</p>
+                  <p className='text-sm'>{categ.text}</p>
               </Link>
             ))
         }

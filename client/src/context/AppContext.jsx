@@ -14,8 +14,9 @@ const AppContextProvider = ({children})=>{
     const [query, setQuery] = useState("")
     const [orders, setOrders] = useState([])
     const [paymentType,setPaymentType] = useState("")
+    const [token,setToken] = useState(localStorage.getItem("token") || false)
     
-    const [address, setAddress] = useState(JSON.parse(localStorage.getItem("address")) ? 
+    const [address, setAddress] = useState(JSON.parse(localStorage.getItem("address"))? 
     JSON.parse(localStorage.getItem("address")) : []);
     
     const [selectedAddress, setSelectedAddress] = useState(null)
@@ -76,6 +77,18 @@ const AppContextProvider = ({children})=>{
         localStorage.setItem("address",JSON.stringify(address))
     },[address])
 
+    useEffect(()=>{
+      localStorage.setItem("token",token)
+    }, [token])
+
+    useEffect(()=>{
+      if (token && !token===false){
+        setLoggedIn(true)
+      } else {
+        setLoggedIn(false)
+      }
+    },[token])
+
 
     const value = {
         category,
@@ -87,7 +100,8 @@ const AppContextProvider = ({children})=>{
         setSelectedAddress,loggedIn,
         setLoggedIn,showLogin,setShowLogin,
         orders, setOrders,
-        paymentType,setPaymentType,handleOrder
+        paymentType,setPaymentType,handleOrder,
+        token,setToken
     }
     return (
         <AppContext.Provider value={value}>

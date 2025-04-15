@@ -10,6 +10,7 @@ import FoodDetail from "./pages/FoodDetail"
 import Navbar from "./components/Navbar"
 import Footer from './components/Footer'
 import Login from './components/Login'
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/add-address' element={<AddAddress/>}/>
       </Routes>
       <Footer/>
+      <Toaster/>
     </div>
   )
 }
