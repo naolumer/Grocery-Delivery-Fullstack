@@ -1,6 +1,5 @@
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
-import Dashboard from "./pages/Dashboard.jsx"
 import { Route,Routes } from 'react-router-dom'
 import Orders from './pages/Orders.jsx'
 import ProductsList from './pages/ProductsList.jsx'
