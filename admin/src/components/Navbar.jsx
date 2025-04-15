@@ -8,10 +8,10 @@ const Navbar = () => {
       }
 
   return (
-    <div className='flex items-center justify-between py-3 w-full px-3 md:pr-8 border-b border-gray-300'>
+    <div className='flex items-center justify-between py-3 w-full md:pr-8 border-b border-gray-300'>
         <img
             onClick={goToFrontend}
-            className='md:w-[155px] w-[130px] ml-3 md:ml-5 lg:ml-12 cursor-pointer items-center'
+            className='md:w-[155px] w-[130px] ml-8 cursor-pointer items-center'
             src={assets.logo}
             alt=""
         />

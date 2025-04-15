@@ -5,11 +5,13 @@ import Orders from './pages/Orders.jsx'
 import ProductsList from './pages/ProductsList.jsx'
 import Navbar from './components/Navbar.jsx'
 import AddProduct from "./pages/AddProduct.jsx"
+import Sidebar from './components/Sidebar.jsx'
 
 const App = () => {
   return (
     <div>
       <Navbar/>
+      <Sidebar/>
       <Routes>
         <Route path="/add-product" element={<AddProduct/>} />
         <Route path='/orders' element={<Orders/>}/>
