@@ -3,7 +3,7 @@ import { assets } from '../../../client/src/assets/assets'
 import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState('add-product') // default active
+  const [activeItem, setActiveItem] = useState('add-product')
 
   const baseClass = 'flex items-center w-full gap-3 pl-3 py-3 '
   const isActiveClass = 'bg-[#e5f4ea] border-r-[5px] border-[#3cc489]'
