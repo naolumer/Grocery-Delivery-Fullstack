@@ -1,8 +1,20 @@
 import React from 'react'
+import { Toaster } from 'react-hot-toast'
+import Dashboard from "./pages/Dashboard.jsx"
+import { Route,Routes } from 'react-router-dom'
+import Orders from './pages/Orders.jsx'
+import ProductsList from './pages/ProductsList.jsx'
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Routes>
+        <Route path="/add-product" element={<AddProduct/>} />
+        <Route path='/orders' element={<Orders/>}/>
+        <Route path='/product-list' element={<ProductsList/>}/>
+      </Routes>
+      <Toaster/>
+    </div>
   )
 }
 
