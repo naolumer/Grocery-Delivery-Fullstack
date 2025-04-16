@@ -143,3 +143,32 @@ export const adminLoginController = async (req,res)=>{
     }
 }
 
+// verify admin token
+
+import jwt from 'jsonwebtoken';
+
+export const verifyTokenController = async (req, res) => {
+  const { atoken } = req.body;
+
+  if (!atoken) {
+    return res.status(400).json({
+      success: false,
+      message: 'No token provided',
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(atoken, process.env.JWT_SECRET);
+    return res.status(200).json({
+      success: true,
+      message: 'Token is valid',
+      email: decoded.email,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid or expired token',
+    });
+  }
+};
+

@@ -11,6 +11,7 @@ const AppContextProvider = ({ children }) => {
   const [query, setQuery] = useState("");
   const [orders, setOrders] = useState([]);
   const [paymentType, setPaymentType] = useState("");
+  
   // Initialize token as null if no token exists in localStorage
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [address, setAddress] = useState(

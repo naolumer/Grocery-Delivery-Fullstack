@@ -2,7 +2,7 @@ import React, { useContext, useEffect,useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
-import {useNavigate,useLocation} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 
 
 
@@ -12,9 +12,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {setIsLoggedIn,setAtoken,showLogin,setShowLogin} = useContext(AppContext)
+  const {setIsLoggedIn,setAtoken,isLoggedIn,aToken} = useContext(AppContext)
   const navigate = useNavigate()
-  const location = useLocation()
+
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -61,12 +61,15 @@ const Login = () => {
     if (success) {
       setEmail('');
       setPassword('');
-      setShowLogin(false);
+      
     }
   };
 
-
-  if (!showLogin && location.pathname !== '/login') return null;
+  useEffect(()=>{
+    if (isLoggedIn){
+      navigate("/add-product")
+    }
+  },[aToken])
 
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-slate-50 px-2">
