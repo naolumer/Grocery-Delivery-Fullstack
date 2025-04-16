@@ -127,11 +127,11 @@ export const adminLoginController = async (req,res)=>{
                 message:"Invalid Password"
             })
         }
-        const atoken = jwt.sign(email, process.env.JWT_SECRET)
+        const atoken = jwt.sign({email}, process.env.JWT_SECRET,{expiresIn:"1h"})
 
         return res.json({
             success:true,
-            message: "Login Successful !",
+            message: "Login Successful!",
             atoken
         })
 
