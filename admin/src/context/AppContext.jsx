@@ -7,6 +7,7 @@ export const AppContext = createContext()
 const AppContextProvider = ({children}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [aToken, setAtoken] = useState(null)
+    const [showLogin,setShowLogin] = useState(false)
 
     const value = {
         isLoggedIn,setIsLoggedIn,aToken,setAtoken

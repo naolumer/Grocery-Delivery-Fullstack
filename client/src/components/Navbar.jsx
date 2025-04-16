@@ -24,7 +24,7 @@
     };
 
     const goToAdminPage= () => {
-      window.location.href = 'http://localhost:5174/'
+      window.location.href = 'http://localhost:5174/login'
     }
   
     return (
