@@ -26,7 +26,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`${backendURL}/api/user/admin/login`, { email, password });
+      const response = await axios.post(`${backendURL}/api/admin/login`, { email, password });
       const { data } = response;
       if (data.success) {
         setIsLoggedIn(true);
@@ -66,10 +66,10 @@ const Login = () => {
   };
 
   useEffect(()=>{
-    if (isLoggedIn){
+    if (isLoggedIn && aToken){
       navigate("/add-product")
     }
-  },[aToken])
+  },[aToken,navigate,isLoggedIn])
 
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-slate-50 px-2">

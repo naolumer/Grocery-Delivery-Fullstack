@@ -43,8 +43,6 @@ export const adminLoginController = async (req,res)=>{
 
 // verify admin token
 
-import jwt from 'jsonwebtoken';
-
 export const verifyTokenController = async (req, res) => {
   const { atoken } = req.body;
 
