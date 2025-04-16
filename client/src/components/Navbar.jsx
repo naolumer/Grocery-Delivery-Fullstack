@@ -22,6 +22,10 @@
       toast.success("Logout successful!")
       navigate("/"); // Redirect to home page
     };
+
+    const goToAdminPage= () => {
+      window.location.href = 'http://localhost:5174/'
+    }
   
     return (
       <>
@@ -34,7 +38,7 @@
           />
   
           <div className='flex items-center justify-between gap-8 lg:gap-6 md:px-16'>
-            <button className='text-gray-600 text-[11px] rounded-full px-4 py-1 border border-gray-400 hidden md:block flex-shrink-0'>
+            <button onClick={goToAdminPage} className='text-gray-600 text-[11px] rounded-full px-4 py-1 border border-gray-400 hidden md:block flex-shrink-0'>
               seller dashboard
             </button>
             <div className='items-center md:text-[17px] gap-8 md:gap-5 text-gray-700 cursor-pointer hidden md:flex flex-shrink-0'>
