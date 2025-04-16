@@ -26,7 +26,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`${backendURL}/api/admin/login`, { email, password });
+      const response = await axios.post(`${backendURL}/api/user/admin/login`, { email, password });
       const { data } = response;
       if (data.success) {
         setIsLoggedIn(true);
@@ -65,21 +65,6 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setShowLogin(false);
-      }
-    };
-
-    if (showLogin) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showLogin, setShowLogin]);
 
   if (!showLogin && location.pathname !== '/login') return null;
 

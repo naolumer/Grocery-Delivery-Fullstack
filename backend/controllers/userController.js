@@ -59,7 +59,7 @@ export const registerUser = async (req,res)=>{
 }
 
 
-// Login api
+// user Login api
 export const loginController = async (req,res)=>{
     
     const {email,password} = req.body
@@ -100,5 +100,46 @@ export const loginController = async (req,res)=>{
     } catch(error){
         res.json({success:false, message:error.message})
     } 
+}
+
+// admin login controller
+
+export const adminLoginController = async (req,res)=>{
+
+    const {email,password} = req.body
+
+    if(!email || !password){
+        return res.json({
+            success:false,
+            message:"Enter email and password"
+        })
+    }
+    try {
+        if (email !== process.env.ADMIN_EMAIL){
+            return res.json({
+                success:false,
+                message:"Invalid Email address"
+            })
+        }
+        if (password !== process.env.ADMIN_PASSWORD){
+            return res.json({
+                success:false,
+                message:"Invalid Password"
+            })
+        }
+        const atoken = jwt.sign(email, process.env.JWT_SECRET)
+
+        return res.json({
+            success:true,
+            message: "Login Successful !",
+            atoken
+        })
+
+    }catch(error){
+        return res.json({
+            success:false,
+            message: error.message
+        })
+    }
 }
 
