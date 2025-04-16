@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {isLoggedIn,setIsLoggedIn,aToken,setAtoken,showLogin,setShowLogin} = useContext(AppContext)
+  const {setIsLoggedIn,setAtoken,showLogin,setShowLogin} = useContext(AppContext)
   const navigate = useNavigate()
   const location = useLocation()
 
