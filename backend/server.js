@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import userRouter from "./routes/userRoutes.js"
 import connectDB from "./config/db.js"
+import adminRouter from "./routes/adminRoutes.js"
 
 dotenv.config()
 connectDB()
@@ -22,6 +23,7 @@ app.get("/",(req,res)=>{
 
 // user api
 app.use("/api/user",userRouter)
+app.use("/api/admin",adminRouter)
 
 
 app.listen(port,()=>{
