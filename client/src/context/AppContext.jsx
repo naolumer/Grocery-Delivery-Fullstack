@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const [allProducts, setAllProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState(dummyProducts);
   const [category, setCategory] = useState("");
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState("");
@@ -24,6 +24,10 @@ const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const queryProducts = () => {
+    if (!query){
+      setAllProducts(dummyProducts)
+      return
+    }
     const filtered = dummyProducts.filter((item) =>
       item?.name?.toLowerCase().startsWith(query.toLowerCase())
     );
@@ -65,9 +69,9 @@ const AppContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    queryProducts()
     if (query) {
       navigate("/products");
-      queryProducts();
     }
   }, [query]);
 

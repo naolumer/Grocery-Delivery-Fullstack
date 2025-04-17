@@ -1,16 +1,10 @@
 import FoodCard from '../components/FoodCard';
-import { dummyProducts } from '../assets/assets';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
 
-
-
-
 const Products = () => {
     const {allProducts} = useContext(AppContext)
-
-    const prod = allProducts ? allProducts : dummyProducts
 
   return (
     <div className='mt-16 w-[85vw] mx-auto mb-32'>
@@ -21,7 +15,7 @@ const Products = () => {
         </div>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pt-16'>
             {
-                prod.map((item,index)=> (
+                allProducts.map((item,index)=> (
                     <FoodCard item={item} index={index}/>
                 ))
             }
