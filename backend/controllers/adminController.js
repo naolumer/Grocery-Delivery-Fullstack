@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import foodModel from "../models/foodModel.js"
 
 // admin login controller
 

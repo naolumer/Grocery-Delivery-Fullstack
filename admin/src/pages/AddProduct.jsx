@@ -48,15 +48,15 @@ const AddProduct = () => {
     images.forEach(img => form.append('images', img)); 
   
     try {
-      const {response} = await axios.post(`${backendURL}/api/admin/add-food`, form, {
+      const {data} = await axios.post(`${backendURL}/api/admin/add-food`, form, {
         headers: {
           'Authorization': `Bearer ${aToken}`,
           'Content-Type': 'multipart/form-data',
         }
       });
   
-      if (response.success) {
-        toast.success(response.message);
+      if (data.success) {
+        toast.success(data.message);
         setFormData({
           name: '',
           description: '',
@@ -66,11 +66,11 @@ const AddProduct = () => {
         });
         setImages([]);
       } else {
-        toast.error("Error: " + response.message );
+        toast.error("Error: " + data.message );
       }
     } catch (err) {
       console.error(err);
-      toast.error("Error Adding Item");
+      toast.error(err.message);
     }
   };
   
