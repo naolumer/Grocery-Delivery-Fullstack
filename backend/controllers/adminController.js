@@ -68,3 +68,29 @@ export const verifyTokenController = async (req, res) => {
   }
 };
 
+// add food
+
+export const addFoodController = async (req,res)=> {
+
+  const {name,description,price,offerPrice,category} = req.body
+  const imgFile = req.file
+
+  if (!name || !description ||!price || !offerPrice || !category){
+    return res.json({
+      success: false,
+      message: "Missing fields"
+    })
+  }
+
+  try {
+    
+
+  } catch(error){
+    return res.json({
+      success:false,
+      message:error.message
+    })
+  }
+
+}
+
