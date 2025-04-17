@@ -73,7 +73,7 @@ export const verifyTokenController = async (req, res) => {
 export const addFoodController = async (req,res)=> {
 
   const {name,description,price,offerPrice,category} = req.body
-  const imgFile = req.file
+  const imgFiles = req.files
 
   if (!name || !description ||!price || !offerPrice || !category){
     return res.json({
@@ -81,17 +81,38 @@ export const addFoodController = async (req,res)=> {
       message: "Missing fields"
     })
   }
-
-  try {
-
-    
-
-  } catch(error){
+  if (!imgFiles || imgFiles.length === 0) {
     return res.json({
-      success:false,
-      message:error.message
-    })
+      success: false,
+      message: "At least one image file is required"
+    });
   }
 
-}
+  try {
+    const imageUrls = req.files.map(file => file.path);
+
+    const newFood = new foodModel({
+      name,
+      description,
+      price,
+      offerPrice,
+      category,
+      image: imageUrls, 
+    });
+
+    await newFood.save();
+
+    return res.json({
+      success: true,
+      message: "Item added successfully",
+      food: newFood,
+    });
+
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
