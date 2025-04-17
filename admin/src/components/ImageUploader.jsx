@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
-import {assets} from "../assets/assets"
+import React, { useRef, useState, useEffect } from "react";
+import { assets } from "../assets/assets";
 
-const ImageUploaderGrid = () => {
+const ImageUploaderGrid = ({ onImagesChange }) => {
   const [images, setImages] = useState([null, null, null, null]);
   const fileInputRefs = [useRef(), useRef(), useRef(), useRef()];
+  const [files, setFiles] = useState([null, null, null, null]);
 
   const handleClick = (index) => {
     fileInputRefs[index].current.click();
@@ -12,22 +13,37 @@ const ImageUploaderGrid = () => {
   const handleFileChange = (index, event) => {
     const file = event.target.files[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      const newImages = [...images];
-      newImages[index] = url;
-      setImages(newImages);
+      const newImageUrls = [...images];
+      const newFiles = [...files];
+
+      newImageUrls[index] = URL.createObjectURL(file);
+      newFiles[index] = file;
+
+      setImages(newImageUrls);
+      setFiles(newFiles);
     }
   };
 
   const handleRemove = (index) => {
     const newImages = [...images];
+    const newFiles = [...files];
+
     newImages[index] = null;
+    newFiles[index] = null;
+
     setImages(newImages);
-    // Optional: also reset the file input value
+    setFiles(newFiles);
+
     if (fileInputRefs[index].current) {
       fileInputRefs[index].current.value = "";
     }
   };
+
+  // Notify parent whenever files update
+  useEffect(() => {
+    const validFiles = files.filter((file) => file !== null);
+    onImagesChange(validFiles);
+  }, [files, onImagesChange]);
 
   return (
     <div className="space-y-2 w-[90%] md:w-[85%] xl:w-[40%] lg:w-[60%]">
@@ -36,7 +52,7 @@ const ImageUploaderGrid = () => {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative w-28 h-24 "
+            className="relative w-28 h-24"
             onClick={() => handleClick(index)}
           >
             <input
@@ -56,7 +72,7 @@ const ImageUploaderGrid = () => {
             {image && (
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent triggering upload on click
+                  e.stopPropagation();
                   handleRemove(index);
                 }}
                 className="absolute top-1 right-1 bg-white text-gray-600 border border-gray-300 rounded-full w-5 h-5 text-xs flex items-center justify-center hover:text-red-500 hover:border-red-300"
@@ -73,3 +89,4 @@ const ImageUploaderGrid = () => {
 };
 
 export default ImageUploaderGrid;
+

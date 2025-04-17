@@ -64,7 +64,8 @@ const AppContextProvider = ({ children }) => {
     aToken,
     setAtoken,
     isLoading,
-    logout
+    logout,
+    backendURL
   };
 
   return (
