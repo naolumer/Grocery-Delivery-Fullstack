@@ -1,10 +1,19 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { assets } from "../assets/assets";
 
-const ImageUploaderGrid = ({ onImagesChange }) => {
+const ImageUploaderGrid = ({ onImagesChange, resetTrigger }) => {
+
   const [images, setImages] = useState([null, null, null, null]);
   const fileInputRefs = [useRef(), useRef(), useRef(), useRef()];
-  const [files, setFiles] = useState([null, null, null, null]);
+
+  useEffect(() => {
+    
+    setImages([null, null, null, null]);
+    fileInputRefs.forEach(ref => {
+      if (ref.current) ref.current.value = '';
+    });
+    onImagesChange([]); 
+  }, [resetTrigger]);
 
   const handleClick = (index) => {
     fileInputRefs[index].current.click();
@@ -13,37 +22,32 @@ const ImageUploaderGrid = ({ onImagesChange }) => {
   const handleFileChange = (index, event) => {
     const file = event.target.files[0];
     if (file) {
-      const newImageUrls = [...images];
-      const newFiles = [...files];
+      const url = URL.createObjectURL(file);
+      const newImages = [...images];
+      newImages[index] = url;
+      setImages(newImages);
 
-      newImageUrls[index] = URL.createObjectURL(file);
-      newFiles[index] = file;
-
-      setImages(newImageUrls);
-      setFiles(newFiles);
+      const files = newImages
+        .map((img, i) => fileInputRefs[i].current?.files[0])
+        .filter(Boolean);
+      onImagesChange(files);
     }
   };
 
   const handleRemove = (index) => {
     const newImages = [...images];
-    const newFiles = [...files];
-
     newImages[index] = null;
-    newFiles[index] = null;
-
     setImages(newImages);
-    setFiles(newFiles);
 
     if (fileInputRefs[index].current) {
       fileInputRefs[index].current.value = "";
     }
-  };
 
-  // Notify parent whenever files update
-  useEffect(() => {
-    const validFiles = files.filter((file) => file !== null);
-    onImagesChange(validFiles);
-  }, [files, onImagesChange]);
+    const files = newImages
+      .map((img, i) => fileInputRefs[i].current?.files[0])
+      .filter(Boolean);
+    onImagesChange(files);
+  };
 
   return (
     <div className="space-y-2 w-[90%] md:w-[85%] xl:w-[40%] lg:w-[60%]">
@@ -52,7 +56,7 @@ const ImageUploaderGrid = ({ onImagesChange }) => {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative w-28 h-24"
+            className="relative w-28 h-24 "
             onClick={() => handleClick(index)}
           >
             <input
@@ -89,4 +93,3 @@ const ImageUploaderGrid = ({ onImagesChange }) => {
 };
 
 export default ImageUploaderGrid;
-
