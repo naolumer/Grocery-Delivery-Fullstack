@@ -9,6 +9,7 @@ import { AppContext } from '../context/AppContext'
 const AddProduct = () => {
 
   const {backendURL,aToken} = useContext(AppContext)
+  const [resetTrigger,setResetTrigger] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -65,6 +66,7 @@ const AddProduct = () => {
           category: ''
         });
         setImages([]);
+        setResetTrigger(prev=>!prev)
       } else {
         toast.error("Error: " + data.message );
       }
@@ -78,7 +80,7 @@ const AddProduct = () => {
     <div className='md:mt-24 mt-[73px] ml-20 md:ml-72 z-20'>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 
-        <ImageUploaderGrid onImagesChange={handleImageChange} />
+        <ImageUploaderGrid onImagesChange={handleImageChange} resetTrigger={resetTrigger} />
 
         <div>
           <p className='font-medium text-gray-700 mb-2 -mt-2'>Product Name</p>
