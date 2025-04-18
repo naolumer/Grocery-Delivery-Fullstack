@@ -12,10 +12,8 @@ const Navbar = () => {
 
     const {logout} = useContext(AppContext)
 
-
-
   return (
-    <div className='flex absolute top-0 right-0 items-center justify-between py-3 w-full md:pr-8 pr-3 border-b border-gray-300'>
+    <div className='flex fixed top-0 right-0 items-center bg-white justify-between py-3 z-50 w-full md:pr-8 pr-3 border-b border-gray-300'>
         <img
             onClick={goToFrontend}
             className='md:w-[155px] w-[140px] md:ml-8 ml-4 cursor-pointer items-center'
