@@ -29,8 +29,9 @@ export const foodListAdmin = async (req, res)=>{
 // inStock controller
 
 export const inStockController =  async (req,res)=>{
+    
     const {foodId} = req.body
-
+    
     if (!foodId){
         return res.json({
             success:false,

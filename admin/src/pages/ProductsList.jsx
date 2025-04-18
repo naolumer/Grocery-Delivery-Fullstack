@@ -29,10 +29,25 @@ const ProductsList = () => {
     }
   };
 
-  const toggleInstock = async ()=>{
+  const toggleInstock = async (id)=>{
 
     try{
-      const {data} = 
+      const {data} = await axios.post(`${backendURL}/api/admin/update-instock`,{foodId:id}, {headers: {
+
+        'Authorization': `Bearer ${aToken}`,
+        'Content-Type': 'application/json',
+      }})
+
+      if (data.success) {
+        toast.success(data.message);
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product._id === id ? { ...product, inStock: !product.inStock } : product
+          )
+        );
+      } else {
+        toast.error(data.message);
+      }
 
     } catch(error){
       console.error(error)
@@ -46,13 +61,13 @@ const ProductsList = () => {
     }
   }, [aToken]);
 
-  const handleToggle = (id) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product._id === id ? { ...product, inStock: !product.inStock } : product
-      )
-    );
-  };
+  // const handleToggle = (id) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((product) =>
+  //       product._id === id ? { ...product, inStock: !product.inStock } : product
+  //     )
+  //   );
+  // };
 
   return (
     <div className="min-h-screen p-6 md:mt-20 mt-[73px] ml-4 md:ml-72 z-20 mb-20 ">
@@ -71,7 +86,8 @@ const ProductsList = () => {
           products.map((product) => (
             <div
               key={product.id}
-              className="grid md:grid-cols-[2fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr_1fr_1fr] gap-4 items-center border-b border-gray-200 p-4 hover:bg-gray-50"
+              className="grid md:grid-cols-[2fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr_1fr_1fr] gap-4 
+              items-center border-b border-gray-200 p-4 hover:bg-gray-50"
             >
               <div className="flex items-center space-x-4">
                 <img
@@ -88,7 +104,7 @@ const ProductsList = () => {
                   <input
                     type="checkbox"
                     checked={product.inStock}
-                    onChange={() => handleToggle(product._id)}
+                    onChange={() => toggleInstock(product._id)}
                     className="sr-only"
                   />
                   <div
