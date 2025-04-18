@@ -29,6 +29,17 @@ const ProductsList = () => {
     }
   };
 
+  const toggleInstock = async ()=>{
+
+    try{
+      const {data} = 
+
+    } catch(error){
+      console.error(error)
+      toast.error("error updating inStock")
+    }
+  }
+
   useEffect(() => {
     if (aToken) {
       getProductList();
@@ -48,7 +59,8 @@ const ProductsList = () => {
       <p className="text-gray-600 font-medium text-xl mb-6 ml-12 md:ml-2">All Products</p>
       <div className="bg-white shadow-md rounded-lg overflow-hidden ml-6 md:ml-0 lg:w-[80%]">
 
-        <div className=" grid md:grid-cols-[2fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr_1fr_1fr] gap-4 bg-gray-100 border-b border-gray-200 font-semibold text-gray-700 p-4">
+        <div className=" grid md:grid-cols-[2fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr_1fr_1fr] gap-4 bg-gray-100 border-b 
+        border-gray-200 font-semibold text-gray-700 p-4">
           <div>Product</div>
           <div>Category</div>
           <div><span className='md:inline-block hidden'>Selling</span>Price </div>
