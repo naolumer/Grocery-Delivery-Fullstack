@@ -45,11 +45,11 @@ const ProductsList = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 md:mt-24 mt-[73px] ml-4 md:ml-72 z-20 mb-20">
-      <p className="text-gray-700 font-medium text-lg mb-4">All Products</p>
-      <div className="bg-white shadow-md rounded-lg overflow-hidden ml-6 md:ml-0">
+    <div className="min-h-screen p-6 md:mt-24 mt-[73px] ml-4 md:ml-72 z-20 mb-20 ">
+      <p className="text-gray-700 font-medium text-lg mb-4 ml-12 md:ml-5">All Products</p>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden ml-6 md:ml-0 lg:w-[80%]">
 
-        <div className="grid md:grid-cols-[2fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr_1fr_1fr] gap-4 bg-gray-50 border-b border-gray-200 font-semibold text-gray-700 p-4">
+        <div className=" grid md:grid-cols-[2fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr_1fr_1fr] gap-4 bg-gray-50 border-b border-gray-200 font-semibold text-gray-700 p-4">
           <div>Product</div>
           <div>Category</div>
           <div><span className='md:inline-block hidden'>Selling</span>Price </div>
@@ -86,7 +86,7 @@ const ProductsList = () => {
                     }`}
                   >
                     <div
-                      className={`w-4 h-5 bg-white rounded-full shadow-md transform transition-transform duration-200 ease-in-out ${
+                      className={`w-4 h-4 bg-white rounded-full shadow-md mt-[2px]  transform transition-transform duration-200 ease-in-out ${
                         product.inStock ? 'translate-x-6' : 'translate-x-0'
                       }`}
                     ></div>

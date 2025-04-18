@@ -9,7 +9,7 @@ const Sidebar = () => {
   const isActiveClass = 'bg-[#e5f4ea] border-r-[5px] border-[#3cc489]'
 
   return (
-    <div className='h-[91vh] w-[60px] md:w-64 absolute left-0 top-[60px] z-10 border-r bg-white border-gray-300 pt-3'>
+    <div className='h-[91vh] w-[60px] md:w-64 fixed left-0 top-[60px] z-10 border-r bg-white border-gray-300 pt-3'>
       <div className='flex flex-col w-full gap-1'>
         <Link
           to="/add-product"
