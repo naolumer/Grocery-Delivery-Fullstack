@@ -61,14 +61,7 @@ const ProductsList = () => {
     }
   }, [aToken]);
 
-  // const handleToggle = (id) => {
-  //   setProducts((prevProducts) =>
-  //     prevProducts.map((product) =>
-  //       product._id === id ? { ...product, inStock: !product.inStock } : product
-  //     )
-  //   );
-  // };
-
+ 
   return (
     <div className="min-h-screen p-6 md:mt-20 mt-[73px] ml-4 md:ml-72 z-20 mb-20 ">
       <p className="text-gray-600 font-medium text-xl mb-6 ml-12 md:ml-2">All Products</p>
@@ -91,14 +84,14 @@ const ProductsList = () => {
             >
               <div className="flex items-center space-x-4">
                 <img
-                  src={product.image[0] || 'https://via.placeholder.com/64'}
+                  src={product.image[0]}
                   alt={product.name}
                   className="w-16 h-16 object-cover rounded-md border border-gray-200"
                 />
-                <span className="text-gray-800 hidden lg:inline-block">{product.name}</span>
+                <span className="text-gray-600 text-sm hidden lg:inline-block">{product.name}</span>
               </div>
-              <div className="text-gray-600">{product.category || 'Vegetables'}</div>
-              <div className="text-gray-800">${product.offerPrice}</div>
+              <div className="text-gray-600 text-sm">{product.category || 'Vegetables'}</div>
+              <div className="text-gray-700 text-[15px]">${product.offerPrice}</div>
               <div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
