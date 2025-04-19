@@ -2,15 +2,15 @@ import React, { useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import FoodCard from '../components/FoodCard'
-import { dummyProducts } from '../assets/assets'
+
 
 
 const CatFoods = () => {
   
-  const {category} = useContext(AppContext)
+  const {category,allProducts} = useContext(AppContext)
   const {categories} = useParams()
 
-  const filteredProducts = dummyProducts.filter((food)=> food.category===category)
+  const filteredProducts = allProducts.filter((food)=> food.category===category)
   return (
     <div className='mt-6 w-[85%] mx-auto mb-32'>
       <div className='absolute mb-5'>

@@ -4,6 +4,7 @@ import cors from "cors"
 import userRouter from "./routes/userRoutes.js"
 import connectDB from "./config/db.js"
 import adminRouter from "./routes/adminRoutes.js"
+import foodRouter from "./routes/foodRoutes.js"
 
 dotenv.config()
 connectDB()
@@ -24,6 +25,7 @@ app.get("/",(req,res)=>{
 // user api
 app.use("/api/user",userRouter)
 app.use("/api/admin",adminRouter)
+app.use("/api/food",foodRouter)
 
 
 app.listen(port,()=>{

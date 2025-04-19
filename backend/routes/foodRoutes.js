@@ -1,11 +1,11 @@
 import express from "express"
-import { getAllProducts } from "../controllers/foodController"
+import { getAllProducts } from "../controllers/foodController.js"
 
 
 
 const foodRouter = express.Router()
 
 
-foodRouter.get("/get-allfoods",getAllProducts)
+foodRouter.get("/get-allfood",getAllProducts)
 
 export default foodRouter

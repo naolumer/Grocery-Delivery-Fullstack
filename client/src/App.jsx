@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Route,Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import MyOrders from "./pages/MyOrders"
@@ -11,10 +11,14 @@ import Navbar from "./components/Navbar"
 import Footer from './components/Footer'
 import Login from './components/Login'
 import { Toaster } from 'react-hot-toast';
+import { AppContext } from './context/AppContext'
 
 const App = () => {
+  const {isLoading} = useContext(AppContext)
+
   return (
     <div>
+      {isLoading && <div className='text-6xl flex items-center justify-center min-h-screen w-full'>LOADING...</div>}
       <Navbar/>
       <hr className='border border-solid' />
       <Login/>

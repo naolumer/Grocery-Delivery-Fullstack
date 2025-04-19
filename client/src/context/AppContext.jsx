@@ -1,16 +1,18 @@
 import { createContext, useState, useEffect } from "react";
-import { dummyProducts } from "../assets/assets";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
+import axios from "axios"
+import toast from "react-hot-toast"
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const [allProducts, setAllProducts] = useState(dummyProducts);
+  const [allProducts, setAllProducts] = useState([]);
   const [category, setCategory] = useState("");
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState("");
   const [orders, setOrders] = useState([]);
   const [paymentType, setPaymentType] = useState("");
+  const [isLoading,setIsLoading] = useState(true)
   
   // Initialize token as null if no token exists in localStorage
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -21,14 +23,30 @@ const AppContextProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("token")); // Initialize based on token presence
   const [showLogin, setShowLogin] = useState(false);
 
+  const backendURL = import.meta.env.VITE_BACKEND_URL
+
   const navigate = useNavigate();
+
+  const getProducts = async ()=> {
+    try {
+      const {data} = await axios.get(`${backendURL}/api/food/get-allfood`)
+
+      if (data.success){
+        setAllProducts(data.food)
+        setIsLoading(false)
+      } else {
+        toast.error(data.message)
+      }
+    } catch(error){
+      toast.error(error.message)
+    }
+  }
 
   const queryProducts = () => {
     if (!query){
-      setAllProducts(dummyProducts)
       return
     }
-    const filtered = dummyProducts.filter((item) =>
+    const filtered = allProducts.filter((item) =>
       item?.name?.toLowerCase().startsWith(query.toLowerCase())
     );
     setAllProducts(filtered);
@@ -56,9 +74,9 @@ const AppContextProvider = ({ children }) => {
       address: selectedAddress,
       items: cart.map((item) => ({
         ...item,
-        name: item.name || dummyProducts.find((p) => p._id === item.id)?.name,
-        image: item.image || dummyProducts.find((p) => p._id === item.id)?.image || [],
-        category: item.category || dummyProducts.find((p) => p._id === item.id)?.category,
+        name: item.name || allProducts.find((p) => p._id === item.id)?.name,
+        image: item.image || allProducts.find((p) => p._id === item.id)?.image || [],
+        category: item.category || allProducts.find((p) => p._id === item.id)?.category,
       })),
       total: cart.reduce((sum, item) => sum + item.quantity * item.offerPrice, 0),
     };
@@ -67,6 +85,10 @@ const AppContextProvider = ({ children }) => {
     setCart([]);
     navigate("/my-orders");
   };
+
+  useEffect(()=>{
+      getProducts()
+  },[])
 
   useEffect(() => {
     queryProducts()
@@ -93,6 +115,8 @@ const AppContextProvider = ({ children }) => {
     setLoggedIn(!!token); // true if token is truthy, false otherwise
   }, [token]);
 
+
+
   const value = {
     category,
     setCategory,setCart,
@@ -104,7 +128,7 @@ const AppContextProvider = ({ children }) => {
     setShowLogin,orders,
     setOrders,paymentType,
     setPaymentType,handleOrder,
-    token,setToken,
+    token,setToken, backendURL
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

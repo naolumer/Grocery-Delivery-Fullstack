@@ -2,17 +2,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import {AppContext} from "../context/AppContext"
 import { Link, useNavigate } from 'react-router-dom'
 import FoodCard from './FoodCard';
-import { dummyProducts } from '../assets/assets';
+
 
 
 const RelatedProducts = () => {
 
-  const {category} = useContext(AppContext)
+  const {category,allProducts} = useContext(AppContext)
   const [related,setRelated] = useState([])
   const navigate = useNavigate()
 
   const getRelated = ()=>{
-    const relatedProducts = dummyProducts.filter((food)=> food.category===category)
+    const relatedProducts = allProducts.filter((food)=> food.category===category)
     setRelated(relatedProducts)
   }
 

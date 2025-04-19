@@ -3,13 +3,12 @@ import { useParams } from 'react-router-dom'
 import { HiMiniStar } from "react-icons/hi2";
 import { AppContext } from '../context/AppContext';
 import RelatedProducts from '../components/RelatedProducts';
-import { dummyProducts } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
 
 const FoodDetail = () => {
   
   const [mainImg,setMainImg] = useState(false)
-  const {setCategory,category,cart, setCart} = useContext(AppContext)
+  const {setCategory,category,cart, setCart,allProducts} = useContext(AppContext)
   const [food,setFood] = useState([])
   const navigate = useNavigate()
   
@@ -58,7 +57,7 @@ const FoodDetail = () => {
 
   useEffect(()=>{
     const curFood = ()=>{
-    const food = dummyProducts.find((food)=> food._id===id)
+    const food = allProducts.find((food)=> food._id===id)
     setFood(food)
     setCategory(food?.category)
     setMainImg(false)

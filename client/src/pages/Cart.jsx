@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import calculateTax from '../utils/taxCalculator';
-import { dummyProducts } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  const { cart, setCart, address } = useContext(AppContext);
+  const { cart, setCart, address,allProducts } = useContext(AppContext);
   const [productsCart, setProductsCart] = useState([]);
   const [showAddress, setShowAddress] = useState(false);
   const {selectedAddress,setSelectedAddress,handleOrder,setPaymentType,paymentType} = useContext(AppContext)
@@ -18,7 +17,7 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchProducts = () => {
-      const filteredProducts = dummyProducts
+      const filteredProducts = allProducts
         .filter((product) => cart.some((cartItem) => cartItem.id === product._id))
         .map((product) => ({
           ...product,
