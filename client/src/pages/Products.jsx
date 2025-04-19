@@ -4,7 +4,7 @@ import { AppContext } from '../context/AppContext';
 
 
 const Products = () => {
-    const {allProducts} = useContext(AppContext)
+    const {filteredProducts} = useContext(AppContext)
 
   return (
     <div className='mt-16 w-[85vw] mx-auto mb-32'>
@@ -15,7 +15,7 @@ const Products = () => {
         </div>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 pt-16'>
             {
-                allProducts.map((item,index)=> (
+                filteredProducts.map((item,index)=> (
                     <FoodCard item={item} index={index}/>
                 ))
             }

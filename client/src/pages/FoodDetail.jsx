@@ -109,7 +109,7 @@ const FoodDetail = () => {
         <div>
           <p className='text-gray-700 font-medium mb-1'>About Product</p>
           {
-            food?.description?.map((desc,index)=>(
+            food?.description?.split(",")?.map((desc,index)=>(
               <p className=' text-sm text-gray-400 list-item ml-4' key={index}>{desc}</p>
             ))
           }

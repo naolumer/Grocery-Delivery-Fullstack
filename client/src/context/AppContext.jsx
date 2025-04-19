@@ -1,55 +1,54 @@
 import { createContext, useState, useEffect } from "react";
-import { data, useNavigate } from "react-router-dom";
-import axios from "axios"
-import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const [allProducts, setAllProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); 
+  const [filteredProducts, setFilteredProducts] = useState([]); 
   const [category, setCategory] = useState("");
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState("");
   const [orders, setOrders] = useState([]);
   const [paymentType, setPaymentType] = useState("");
-  const [isLoading,setIsLoading] = useState(true)
-  
-  // Initialize token as null if no token exists in localStorage
+  const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [address, setAddress] = useState(
     JSON.parse(localStorage.getItem("address")) || []
   );
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("token")); // Initialize based on token presence
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
   const [showLogin, setShowLogin] = useState(false);
 
-  const backendURL = import.meta.env.VITE_BACKEND_URL
-
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
 
-  const getProducts = async ()=> {
+  const getProducts = async () => {
     try {
-      const {data} = await axios.get(`${backendURL}/api/food/get-allfood`)
-
-      if (data.success){
-        setAllProducts(data.food)
-        setIsLoading(false)
+      const { data } = await axios.get(`${backendURL}/api/food/get-allfood`);
+      if (data.success) {
+        setAllProducts(data.food);
+        setFilteredProducts(data.food); 
+        setIsLoading(false);
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
-    } catch(error){
-      toast.error(error.message)
+    } catch (error) {
+      toast.error(error.message);
     }
-  }
+  };
 
   const queryProducts = () => {
-    if (!query){
-      return
+    if (!query) {
+      setFilteredProducts(allProducts); 
+    } else {
+      const filtered = allProducts.filter((item) =>
+        item?.name?.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredProducts(filtered);
     }
-    const filtered = allProducts.filter((item) =>
-      item?.name?.toLowerCase().startsWith(query.toLowerCase())
-    );
-    setAllProducts(filtered);
   };
 
   const handleOrder = () => {
@@ -57,17 +56,14 @@ const AppContextProvider = ({ children }) => {
       setShowLogin(true);
       return;
     }
-
     if (cart.length === 0) {
       alert("Your cart is empty.");
       return;
     }
-
     if (!selectedAddress) {
       alert("Please select a delivery address.");
       return;
     }
-
     const newOrder = {
       id: Date.now(),
       paymentMethod: paymentType,
@@ -80,55 +76,51 @@ const AppContextProvider = ({ children }) => {
       })),
       total: cart.reduce((sum, item) => sum + item.quantity * item.offerPrice, 0),
     };
-
     setOrders((prev) => [...prev, newOrder]);
     setCart([]);
     navigate("/my-orders");
   };
 
-  useEffect(()=>{
-      getProducts()
-  },[])
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   useEffect(() => {
-    queryProducts()
+    queryProducts();
     if (query) {
       navigate("/products");
     }
-  }, [query]);
+  }, [query, allProducts]); 
 
   useEffect(() => {
     localStorage.setItem("address", JSON.stringify(address));
   }, [address]);
 
-  // Only save token to localStorage if it's not null or undefined
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
     } else {
-      localStorage.removeItem("token"); // Ensure token is removed when cleared
+      localStorage.removeItem("token");
     }
   }, [token]);
 
-  // Update loggedIn based on token presence
   useEffect(() => {
-    setLoggedIn(!!token); // true if token is truthy, false otherwise
+    setLoggedIn(!!token);
   }, [token]);
 
-
-
   const value = {
-    category,
-    setCategory,setCart,
-    cart,query,setQuery,
-    allProducts,setAllProducts,
-    address,setAddress,selectedAddress,
+    category,setCategory,
+    setCart,cart,
+    query,setQuery,
+    allProducts,filteredProducts, 
+    setAllProducts,address,
+    setAddress,selectedAddress,
     setSelectedAddress,loggedIn,
     setLoggedIn,showLogin,
     setShowLogin,orders,
     setOrders,paymentType,
     setPaymentType,handleOrder,
-    token,setToken, backendURL
+    token,setToken, backendURL,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
