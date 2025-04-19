@@ -136,7 +136,6 @@ const Cart = () => {
                 <p>${(cartItem.offerPrice * cartItem.quantity).toFixed(2)}</p>
               </div>
               
-              {/* Remove Button */}
               <button 
                 onClick={(e) => handleRemove(e, cartItem._id)}
                 className="text-red-500 border-2 border-red-500 rounded-full w-6 h-6 md:mr-20 mr-10 flex items-center justify-center hover:bg-red-100 sm:ml-auto"
