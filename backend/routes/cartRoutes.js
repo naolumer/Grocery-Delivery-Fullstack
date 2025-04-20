@@ -5,7 +5,7 @@ import { userAuth } from "../middlewares/authUser.js"
 
 const cartRouter = express.Router()
 
-cartRouter.get("/get-cart", cartController.getCart )
-cartRouter.delete("/delete/:itemId",cartController.removeItem)
-cartRouter.post("/add",cartController.addItem)
-cartRouter.put("/update",cartController.updateQuantity)
+cartRouter.get("/get-cart", userAuth, cartController.getCart )
+cartRouter.delete("/delete/:itemId", userAuth,cartController.removeItem)
+cartRouter.post("/add", userAuth,cartController.addItem)
+cartRouter.put("/update/:itemId", userAuth,cartController.updateQuantity)
