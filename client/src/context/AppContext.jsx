@@ -51,6 +51,56 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+  const addToCart = async (foodId, quantity = 1) => {
+    try {
+      const { data } = await axios.post(
+        `${backendURL}/api/cart/add`,
+        { foodId, quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (data.success) setCart(data.cart);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  
+  const updateCartQuantity = async (foodId, quantity) => {
+    try {
+      const { data } = await axios.put(
+        `${backendURL}/api/cart/update/${foodId}`,
+        { quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (data.success) setCart(data.cart);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  
+  const removeFromCart = async (foodId) => {
+    try {
+      const { data } = await axios.delete(
+        `${backendURL}/api/cart/delete/${foodId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (data.success) setCart(data.cart);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const handleOrder = () => {
     if (!loggedIn) {
       setShowLogin(true);
@@ -80,6 +130,28 @@ const AppContextProvider = ({ children }) => {
     setCart([]);
     navigate("/my-orders");
   };
+
+  const getCart = async ()=>{
+    try{
+      const {data} = await axios.get(`${backendURL}/api/cart/get-food`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      })
+
+      if (data.success){
+        setCart(data.cart)
+      } 
+
+    } catch(error){
+      toast.error(error.message)
+    }
+  }
+
+  useEffect(()=>{
+    if (token) getCart()
+  },[token])
 
   useEffect(() => {
     getProducts();
@@ -121,6 +193,7 @@ const AppContextProvider = ({ children }) => {
     setOrders,paymentType,
     setPaymentType,handleOrder,
     token,setToken, backendURL,
+    addToCart,updateCartQuantity,removeFromCart,getCart
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
