@@ -7,7 +7,8 @@ const Cart = () => {
   const { cart, setCart, address,allProducts } = useContext(AppContext);
   const [productsCart, setProductsCart] = useState([]);
   const [showAddress, setShowAddress] = useState(false);
-  const {selectedAddress,setSelectedAddress,handleOrder,setPaymentType,paymentType} = useContext(AppContext)
+  const {selectedAddress,setSelectedAddress,handleOrder,setPaymentType,
+    paymentType,removeFromCart,updateCartQuantity} = useContext(AppContext)
   const navigate = useNavigate();
 
   const toggleShowAddress = () => {
@@ -34,34 +35,24 @@ const Cart = () => {
     0
   );
 
-  const handleCartMinus = (e, itemId) => {
+  const handleCartMinus = (e, itemId,currentQty) => {
     e.preventDefault();
-    setCart((prev) =>
-      prev
-        .map((cartItem) =>
-          cartItem.id === itemId && cartItem.quantity > 0
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-        .filter((cartItem) => cartItem.quantity > 0)
-    );
+    if (currentQty <= 1) {
+      removeFromCart(itemId);
+    } else {
+      updateCartQuantity(itemId, currentQty - 1);
+    }
   };
 
-  const handleCartPlus = (e, itemId, inStock) => {
+  const handleCartPlus = (e, itemId, inStock,currentQty) => {
     e.preventDefault();
     if (!inStock) return;
-    setCart((prev) =>
-      prev.map((cartItem) =>
-        cartItem.id === itemId
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      )
-    );
+    updateCartQuantity(itemId, currentQty + 1);
   };
 
   const handleRemove = (e, itemId) => {
     e.preventDefault();
-    setCart((prev) => prev.filter((cartItem) => cartItem.id !== itemId));
+    removeFromCart(itemId)
   };
 
   return (
