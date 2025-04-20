@@ -6,8 +6,8 @@ import toast from "react-hot-toast";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const [allProducts, setAllProducts] = useState([]); 
-  const [filteredProducts, setFilteredProducts] = useState([]); 
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState("");
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState("");
@@ -30,19 +30,20 @@ const AppContextProvider = ({ children }) => {
       const { data } = await axios.get(`${backendURL}/api/food/get-allfood`);
       if (data.success) {
         setAllProducts(data.food);
-        setFilteredProducts(data.food); 
+        setFilteredProducts(data.food);
         setIsLoading(false);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Failed to load products");
+      console.error(error)
     }
   };
 
   const queryProducts = () => {
     if (!query) {
-      setFilteredProducts(allProducts); 
+      setFilteredProducts(allProducts);
     } else {
       const filtered = allProducts.filter((item) =>
         item?.name?.toLowerCase().includes(query.toLowerCase())
@@ -62,12 +63,18 @@ const AppContextProvider = ({ children }) => {
           },
         }
       );
-      if (data.success) setCart(data.cart);
+      if (data.success) {
+        setCart(data.cart);
+        toast.success("Added to cart!");
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Failed to add to cart");
+      console.error(error)
     }
   };
-  
+
   const updateCartQuantity = async (foodId, quantity) => {
     try {
       const { data } = await axios.put(
@@ -79,12 +86,18 @@ const AppContextProvider = ({ children }) => {
           },
         }
       );
-      if (data.success) setCart(data.cart);
+      if (data.success) {
+        setCart(data.cart);
+        toast.success("Cart updated!");
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Failed to update cart");
+      console.error(error)
     }
   };
-  
+
   const removeFromCart = async (foodId) => {
     try {
       const { data } = await axios.delete(
@@ -95,9 +108,15 @@ const AppContextProvider = ({ children }) => {
           },
         }
       );
-      if (data.success) setCart(data.cart);
+      if (data.success) {
+        setCart(data.cart);
+        toast.success("Item removed from cart!");
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Failed to remove item");
+      console.error(error)
     }
   };
 
@@ -107,11 +126,11 @@ const AppContextProvider = ({ children }) => {
       return;
     }
     if (cart.length === 0) {
-      alert("Your cart is empty.");
+      toast.error("Your cart is empty.");
       return;
     }
     if (!selectedAddress) {
-      alert("Please select a delivery address.");
+      toast.error("Please select a delivery address.");
       return;
     }
     const newOrder = {
@@ -119,39 +138,42 @@ const AppContextProvider = ({ children }) => {
       paymentMethod: paymentType,
       address: selectedAddress,
       items: cart.map((item) => ({
-        ...item,
-        name: item.name || allProducts.find((p) => p._id === item.id)?.name,
-        image: item.image || allProducts.find((p) => p._id === item.id)?.image || [],
-        category: item.category || allProducts.find((p) => p._id === item.id)?.category,
+        id: item.id,
+        name: item.name,
+        image: item.image,
+        quantity: item.quantity,
+        offerPrice: item.offerPrice,
+        category: allProducts.find((p) => p._id === item.id)?.category || "Unknown",
       })),
       total: cart.reduce((sum, item) => sum + item.quantity * item.offerPrice, 0),
     };
     setOrders((prev) => [...prev, newOrder]);
     setCart([]);
+    toast.success("Order placed successfully!");
     navigate("/my-orders");
   };
 
-  const getCart = async ()=>{
-    try{
-      const {data} = await axios.get(`${backendURL}/api/cart/get-food`, {
+  const getCart = async () => {
+    try {
+      const { data } = await axios.get(`${backendURL}/api/cart/get-cart`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        }
-      })
-
-      if (data.success){
-        setCart(data.cart)
-      } 
-
-    } catch(error){
-      toast.error(error.message)
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (data.success) {
+        setCart(data.cart);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Failed to load cart");
+      console.error(error)
     }
-  }
+  };
 
-  useEffect(()=>{
-    if (token) getCart()
-  },[token])
+  useEffect(() => {
+    if (token) getCart();
+  }, [token]);
 
   useEffect(() => {
     getProducts();
@@ -162,7 +184,7 @@ const AppContextProvider = ({ children }) => {
     if (query) {
       navigate("/products");
     }
-  }, [query, allProducts]); 
+  }, [query, allProducts]);
 
   useEffect(() => {
     localStorage.setItem("address", JSON.stringify(address));
@@ -181,19 +203,20 @@ const AppContextProvider = ({ children }) => {
   }, [token]);
 
   const value = {
-    category,setCategory,
-    setCart,cart,
-    query,setQuery,
-    allProducts,filteredProducts, 
-    setAllProducts,address,
-    setAddress,selectedAddress,
-    setSelectedAddress,loggedIn,
-    setLoggedIn,showLogin,
-    setShowLogin,orders,
-    setOrders,paymentType,
-    setPaymentType,handleOrder,
-    token,setToken, backendURL,
-    addToCart,updateCartQuantity,removeFromCart,getCart
+    category, setCategory,
+    cart, setCart,
+    query, setQuery,
+    allProducts, filteredProducts,
+    setAllProducts, address,
+    setAddress, selectedAddress,
+    setSelectedAddress, loggedIn,
+    setLoggedIn, showLogin,
+    setShowLogin, orders,
+    setOrders, paymentType,
+    setPaymentType, handleOrder,
+    token, setToken, backendURL,
+    addToCart, updateCartQuantity, removeFromCart, getCart,
+    isLoading
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
