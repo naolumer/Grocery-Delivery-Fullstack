@@ -7,4 +7,4 @@ const cartRouter = express.Router()
 
 cartRouter.get("/get-cart",userAuth, cartController.getCart )
 cartRouter.delete("/delete")
-cartRouter.post()
+cartRouter.post("/add")
